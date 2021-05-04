@@ -24,8 +24,20 @@
   "devDependencies": {
     "ava": "^3.12.1",
     "dotenv": "^8.2.0",
+    "husky": "^6.0.0",
     "nodemon": "^2.0.6",
     "nyc": "^15.1.0",
     "prettier": "2.1.1"
+  },
+  "lint-staged": {
+    "*.js*": [
+        "yarn prettier",
+        "git add"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   }
 }
