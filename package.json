@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node src/app.js",
     "dev": "nodemon src/app.js",
-    "test": "nyc ava"
+    "test": "nyc ava",
+    "prettier": "prettier --write src/**/*"
   },
   "dependencies": {
     "@koa/cors": "^3.1.0",
