@@ -2,6 +2,7 @@ const BigNumber = require('bignumber.js');
 const { polygonWeb3: web3, web3Factory } = require('../../../utils/web3');
 
 const SushiMiniChefV2 = require('../../../abis/matic/SushiMiniChefV2.json');
+const SushiComplexRewarderTime = require('../../../abis/matic/SushiComplexRewarderTime.json');
 const fetchPrice = require('../../../utils/fetchPrice');
 const pools = require('../../../data/matic/sushiLpPools.json');
 const { compound } = require('../../../utils/compound');
@@ -15,6 +16,10 @@ const minichef = '0x0769fd68dFb93167989C6f7254cd0D766Fb2841F';
 const oracleId = 'SUSHI';
 const oracle = 'tokens';
 const DECIMALS = '1e18';
+
+// matic
+const complexRewarderTime = '0xa3378Ca78633B3b9b2255EAa26748770211163AE';
+const oracleIdMatic = 'MATIC';
 
 const getSushiLpApys = async () => {
   let apys = {};
@@ -31,25 +36,28 @@ const getSushiLpApys = async () => {
 };
 
 const getPoolApy = async (minichef, pool) => {
-  const [yearlyRewardsInUsd, totalStakedInUsd] = await Promise.all([
+  const [yearlyRewardsInUsd, yearlyRewardsInUsdMatic, totalStakedInUsd] = await Promise.all([
     getYearlyRewardsInUsd(minichef, pool),
+    getYearlyRewardsInUsdMatic(complexRewarderTime, pool),
     getTotalLpStakedInUsd(minichef, pool),
   ]);
-  const simpleApy = yearlyRewardsInUsd.dividedBy(totalStakedInUsd);
+
+  const totalRewardsInUSD = yearlyRewardsInUsd + yearlyRewardsInUsdMatic;
+  const simpleApy = totalRewardsInUSD.dividedBy(totalStakedInUsd);
   const apy = compound(simpleApy, process.env.BASE_HPY, 1, 0.955);
   return { [pool.name]: apy };
 };
 
 const getYearlyRewardsInUsd = async (minichef, pool) => {
   const blockNum = await getBlockNumber(POLYGON_CHAIN_ID);
-  const minichefContact = new web3.eth.Contract(SushiMiniChefV2, minichef);
+  const minichefContract = new web3.eth.Contract(SushiMiniChefV2, minichef);
 
-  const rewards = new BigNumber(await minichefContact.methods.sushiPerSecond().call());
+  const rewards = new BigNumber(await minichefContract.methods.sushiPerSecond().call());
 
-  let { allocPoint } = await minichefContact.methods.poolInfo(pool.poolId).call();
+  let { allocPoint } = await minichefContract.methods.poolInfo(pool.poolId).call();
   allocPoint = new BigNumber(allocPoint);
 
-  const totalAllocPoint = new BigNumber(await minichefContact.methods.totalAllocPoint().call());
+  const totalAllocPoint = new BigNumber(await minichefContract.methods.totalAllocPoint().call());
   const poolBlockRewards = rewards.times(allocPoint).dividedBy(totalAllocPoint);
 
   const secondsPerBlock = 1;
@@ -57,6 +65,33 @@ const getYearlyRewardsInUsd = async (minichef, pool) => {
   const yearlyRewards = poolBlockRewards.dividedBy(secondsPerBlock).times(secondsPerYear);
 
   const tokenPrice = await fetchPrice({ oracle, id: oracleId });
+  const yearlyRewardsInUsd = yearlyRewards.times(tokenPrice).dividedBy(DECIMALS);
+
+  return yearlyRewardsInUsd;
+};
+
+const getYearlyMaticRewardsInUsd = async (complexRewarderTime, pool) => {
+  const blockNum = await getBlockNumber(POLYGON_CHAIN_ID);
+  const complexRewarderTimeContract = new web3.eth.Contract(
+    SushiComplexRewarderTime,
+    complexRewarderTime
+  );
+
+  const rewards = new BigNumber(await complexRewarderTimeContract.methods.rewardPerSecond().call());
+
+  let { allocPoint } = await complexRewarderTimeContract.methods.poolInfo(pool.poolId).call();
+  allocPoint = new BigNumber(allocPoint);
+
+  const totalAllocPoint = new BigNumber(
+    await complexRewarderTimeContract.methods.totalAllocPoint().call()
+  );
+  const poolBlockRewards = rewards.times(allocPoint).dividedBy(totalAllocPoint);
+
+  const secondsPerBlock = 1;
+  const secondsPerYear = 31536000;
+  const yearlyRewards = poolBlockRewards.dividedBy(secondsPerBlock).times(secondsPerYear);
+
+  const tokenPrice = await fetchPrice({ oracle, id: oracleIdMatic });
   const yearlyRewardsInUsd = yearlyRewards.times(tokenPrice).dividedBy(DECIMALS);
 
   return yearlyRewardsInUsd;
