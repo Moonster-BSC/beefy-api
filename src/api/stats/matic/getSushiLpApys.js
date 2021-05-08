@@ -42,10 +42,16 @@ const getPoolApy = async (minichef, pool) => {
     getTotalLpStakedInUsd(minichef, pool),
   ]);
 
+  const sushiRewardCalculationValue = await getYearlyRewardsInUsd_SushiMethod(
+    minichef,
+    pool,
+    totalStakedInUsd
+  );
+
   const totalRewardsInUSD = yearlyRewardsInUsd.plus(yearlyMaticRewardsInUsd);
   const simpleApy = totalRewardsInUSD.dividedBy(totalStakedInUsd);
   const apy = compound(simpleApy, process.env.BASE_HPY, 1, 0.955);
-  return { [pool.name]: apy };
+  return { [pool.name]: simpleApy, Sushimanual: sushiRewardCalculationValue };
 };
 
 const getYearlyRewardsInUsd = async (minichef, pool) => {
@@ -97,6 +103,32 @@ const getYearlyMaticRewardsInUsd = async (complexRewarderTime, pool) => {
   const yearlyRewardsInUsd = yearlyRewards.times(tokenPrice).dividedBy(DECIMALS);
 
   return yearlyRewardsInUsd;
+};
+
+const getYearlyRewardsInUsd_SushiMethod = async (minichef, pool, totalStakedInUsd) => {
+  // This code is using the exact method that Sushi uses to calculate their APY. This is to see the discrepancy between our APR and their APR
+  const minichefContract = new web3.eth.Contract(SushiMiniChefV2, minichef);
+
+  const totalAllocPoint = 1000; //pool.miniChef.totalAllocPoint
+
+  let { allocPoint } = await minichefContract.methods.poolInfo(pool.poolId).call();
+  allocPoint = new BigNumber(allocPoint);
+
+  const sushiPerSecond = new BigNumber(await minichefContract.methods.sushiPerSecond().call());
+
+  const rewardPerSecond = allocPoint
+    .dividedBy(totalAllocPoint)
+    .times(sushiPerSecond)
+    .dividedBy('1e18');
+
+  const sushiPrice = await lpTokenPrice(pool);
+
+  const roiPerSecond = rewardPerSecond.times(2).times(sushiPrice).dividedBy(totalStakedInUsd); // *2 with matic rewards
+  const roiPerHour = roiPerSecond.times(3600);
+  const roiPerDay = roiPerHour.times(24);
+  const roiPerMonth = roiPerDay.times(30);
+  const roiPerYear = roiPerMonth.times(12).plus(0.05);
+  return roiPerYear;
 };
 
 const getTotalLpStakedInUsd = async (targetAddr, pool) => {
