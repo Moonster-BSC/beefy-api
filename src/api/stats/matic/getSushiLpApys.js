@@ -36,13 +36,13 @@ const getSushiLpApys = async () => {
 };
 
 const getPoolApy = async (minichef, pool) => {
-  const [yearlyRewardsInUsd, yearlyRewardsInUsdMatic, totalStakedInUsd] = await Promise.all([
+  const [yearlyRewardsInUsd, yearlyMaticRewardsInUsd, totalStakedInUsd] = await Promise.all([
     getYearlyRewardsInUsd(minichef, pool),
-    getYearlyRewardsInUsdMatic(complexRewarderTime, pool),
+    getYearlyMaticRewardsInUsd(complexRewarderTime, pool),
     getTotalLpStakedInUsd(minichef, pool),
   ]);
 
-  const totalRewardsInUSD = yearlyRewardsInUsd + yearlyRewardsInUsdMatic;
+  const totalRewardsInUSD = yearlyRewardsInUsd + yearlyMaticRewardsInUsd;
   const simpleApy = totalRewardsInUSD.dividedBy(totalStakedInUsd);
   const apy = compound(simpleApy, process.env.BASE_HPY, 1, 0.955);
   return { [pool.name]: apy };
