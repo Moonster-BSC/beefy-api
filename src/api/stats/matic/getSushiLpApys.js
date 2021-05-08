@@ -1,5 +1,5 @@
 const BigNumber = require('bignumber.js');
-const { avaxWeb3: web3, web3Factory } = require('../../../utils/web3');
+const { polygonWeb3: web3, web3Factory } = require('../../../utils/web3');
 
 const SushiMiniChefV2 = require('../../../abis/matic/SushiMiniChefV2.json');
 const fetchPrice = require('../../../utils/fetchPrice');
@@ -11,7 +11,7 @@ const getBlockNumber = require('../../../utils/getBlockNumber');
 const ERC20 = require('../../../abis/ERC20.json');
 const { lpTokenPrice } = require('../../../utils/lpTokens');
 
-const minichef = '0xFb26525B14048B7BB1F3794F6129176195Db7766';
+const minichef = '0x0769fd68dFb93167989C6f7254cd0D766Fb2841F';
 const oracleId = 'SUSHI';
 const oracle = 'tokens';
 const DECIMALS = '1e18';
