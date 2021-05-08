@@ -1,9 +1,9 @@
 const BigNumber = require('bignumber.js');
-const { polygonWeb3: web3, web3Factory } = require('../../../utils/web3');
+const { avaxWeb3: web3, web3Factory } = require('../../../utils/web3');
 
-const MasterChef = require('../../../abis/matic/KrillChef.json');
+const SushiMiniChefV2 = require('../../../abis/matic/SushiMiniChefV2.json');
 const fetchPrice = require('../../../utils/fetchPrice');
-const pools = require('../../../data/matic/krillLpPools.json');
+const pools = require('../../../data/avax/lydLpPools.json');
 const { compound } = require('../../../utils/compound');
 const { POLYGON_CHAIN_ID } = require('../../../constants');
 const getBlockNumber = require('../../../utils/getBlockNumber');
@@ -11,16 +11,16 @@ const getBlockNumber = require('../../../utils/getBlockNumber');
 const ERC20 = require('../../../abis/ERC20.json');
 const { lpTokenPrice } = require('../../../utils/lpTokens');
 
-const masterchef = '0x34bc3D36845d8A7cA6964261FbD28737d0d6510f';
-const oracleId = 'KRILL';
+const minichef = '0xFb26525B14048B7BB1F3794F6129176195Db7766';
+const oracleId = 'LYD';
 const oracle = 'tokens';
 const DECIMALS = '1e18';
 
-const getKrillLpApys = async () => {
+const getSushiLpApys = async () => {
   let apys = {};
 
   let promises = [];
-  pools.forEach(pool => promises.push(getPoolApy(masterchef, pool)));
+  pools.forEach(pool => promises.push(getPoolApy(minichef, pool)));
   const values = await Promise.all(promises);
 
   for (item of values) {
@@ -30,35 +30,29 @@ const getKrillLpApys = async () => {
   return apys;
 };
 
-const getPoolApy = async (masterchef, pool) => {
+const getPoolApy = async (minichef, pool) => {
   const [yearlyRewardsInUsd, totalStakedInUsd] = await Promise.all([
-    getYearlyRewardsInUsd(masterchef, pool),
-    getTotalLpStakedInUsd(masterchef, pool),
+    getYearlyRewardsInUsd(minichef, pool),
+    getTotalLpStakedInUsd(minichef, pool),
   ]);
   const simpleApy = yearlyRewardsInUsd.dividedBy(totalStakedInUsd);
   const apy = compound(simpleApy, process.env.BASE_HPY, 1, 0.955);
   return { [pool.name]: apy };
 };
 
-const getYearlyRewardsInUsd = async (masterchef, pool) => {
+const getYearlyRewardsInUsd = async (minichef, pool) => {
   const blockNum = await getBlockNumber(POLYGON_CHAIN_ID);
-  const masterchefContract = new web3.eth.Contract(MasterChef, masterchef);
+  const minichefContact = new web3.eth.Contract(SushiMiniChefV2, minichef);
 
-  const multiplier = new BigNumber(
-    await masterchefContract.methods.getMultiplier(blockNum - 1, blockNum).call()
-  );
-  const blockRewards = new BigNumber(await masterchefContract.methods.krillPerBlock().call());
+  const rewards = new BigNumber(await minichefContact.methods.sushiPerSecond().call());
 
-  let { allocPoint } = await masterchefContract.methods.poolInfo(pool.poolId).call();
+  let { allocPoint } = await minichefContact.methods.poolInfo(pool.poolId).call();
   allocPoint = new BigNumber(allocPoint);
 
-  const totalAllocPoint = new BigNumber(await masterchefContract.methods.totalAllocPoint().call());
-  const poolBlockRewards = blockRewards
-    .times(multiplier)
-    .times(allocPoint)
-    .dividedBy(totalAllocPoint);
+  const totalAllocPoint = new BigNumber(await minichefContact.methods.totalAllocPoint().call());
+  const poolBlockRewards = rewards.times(allocPoint).dividedBy(totalAllocPoint);
 
-  const secondsPerBlock = 2;
+  const secondsPerBlock = 1;
   const secondsPerYear = 31536000;
   const yearlyRewards = poolBlockRewards.dividedBy(secondsPerBlock).times(secondsPerYear);
 
@@ -69,7 +63,7 @@ const getYearlyRewardsInUsd = async (masterchef, pool) => {
 };
 
 const getTotalLpStakedInUsd = async (targetAddr, pool) => {
-  const web3 = web3Factory(137);
+  const web3 = web3Factory(43114);
 
   const tokenPairContract = new web3.eth.Contract(ERC20, pool.address);
   const totalStaked = new BigNumber(await tokenPairContract.methods.balanceOf(targetAddr).call());
@@ -78,4 +72,4 @@ const getTotalLpStakedInUsd = async (targetAddr, pool) => {
   return totalStakedInUsd;
 };
 
-module.exports = getKrillLpApys;
+module.exports = getSushiLpApys;
