@@ -19,7 +19,7 @@ const DECIMALS = '1e18';
 
 // matic
 const complexRewarderTime = '0xa3378Ca78633B3b9b2255EAa26748770211163AE';
-const oracleIdMatic = 'MATIC';
+const oracleIdMatic = 'WMATIC';
 
 const getSushiLpApys = async () => {
   let apys = {};
@@ -42,7 +42,7 @@ const getPoolApy = async (minichef, pool) => {
     getTotalLpStakedInUsd(minichef, pool),
   ]);
 
-  const totalRewardsInUSD = yearlyRewardsInUsd + yearlyMaticRewardsInUsd;
+  const totalRewardsInUSD = yearlyRewardsInUsd.plus(yearlyMaticRewardsInUsd);
   const simpleApy = totalRewardsInUSD.dividedBy(totalStakedInUsd);
   const apy = compound(simpleApy, process.env.BASE_HPY, 1, 0.955);
   return { [pool.name]: apy };
@@ -82,9 +82,7 @@ const getYearlyMaticRewardsInUsd = async (complexRewarderTime, pool) => {
   let { allocPoint } = await complexRewarderTimeContract.methods.poolInfo(pool.poolId).call();
   allocPoint = new BigNumber(allocPoint);
 
-  const totalAllocPoint = new BigNumber(
-    await complexRewarderTimeContract.methods.totalAllocPoint().call()
-  );
+  const totalAllocPoint = new BigNumber(1000);
   const poolBlockRewards = rewards.times(allocPoint).dividedBy(totalAllocPoint);
 
   const secondsPerBlock = 1;
