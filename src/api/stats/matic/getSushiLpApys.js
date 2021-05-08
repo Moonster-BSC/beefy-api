@@ -3,7 +3,7 @@ const { avaxWeb3: web3, web3Factory } = require('../../../utils/web3');
 
 const SushiMiniChefV2 = require('../../../abis/matic/SushiMiniChefV2.json');
 const fetchPrice = require('../../../utils/fetchPrice');
-const pools = require('../../../data/avax/lydLpPools.json');
+const pools = require('../../../data/matic/sushiLpPools.json');
 const { compound } = require('../../../utils/compound');
 const { POLYGON_CHAIN_ID } = require('../../../constants');
 const getBlockNumber = require('../../../utils/getBlockNumber');
@@ -12,7 +12,7 @@ const ERC20 = require('../../../abis/ERC20.json');
 const { lpTokenPrice } = require('../../../utils/lpTokens');
 
 const minichef = '0xFb26525B14048B7BB1F3794F6129176195Db7766';
-const oracleId = 'LYD';
+const oracleId = 'SUSHI';
 const oracle = 'tokens';
 const DECIMALS = '1e18';
 
@@ -63,7 +63,7 @@ const getYearlyRewardsInUsd = async (minichef, pool) => {
 };
 
 const getTotalLpStakedInUsd = async (targetAddr, pool) => {
-  const web3 = web3Factory(43114);
+  const web3 = web3Factory(POLYGON_CHAIN_ID);
 
   const tokenPairContract = new web3.eth.Contract(ERC20, pool.address);
   const totalStaked = new BigNumber(await tokenPairContract.methods.balanceOf(targetAddr).call());
