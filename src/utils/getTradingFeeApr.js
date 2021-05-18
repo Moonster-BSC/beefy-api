@@ -1,4 +1,5 @@
 const { startOfMinute, subDays } = require('date-fns');
+const { pairDayDataQuery } = require('../apollo/queries');
 
 const getTradingFeeApr = async (client, pairAddresses) => {
   const date = startOfMinute(subDays(Date.now(), 1));

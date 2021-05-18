@@ -114,6 +114,29 @@ const pairTimeTravelQuery = gql`
   ${pairFieldsQuery}
 `;
 
+const pairDayDataQuery = (pairs, startTimestamp) => {
+  let pairsString = `[`;
+  pairs.map(pair => {
+    return (pairsString += `"${pair}"`);
+  });
+  pairsString += ']';
+  const queryString = `
+    query days {
+      pairDayDatas(first: 1000, orderBy: date, orderDirection: asc, where: { pairAddress_in: ${pairsString}, date_gt: ${startTimestamp} }) {
+        id
+        pairAddress 
+        date
+        dailyVolumeToken0
+        dailyVolumeToken1
+        dailyVolumeUSD
+        totalSupply
+        reserveUSD
+      }
+    } 
+`;
+  return gql(queryString);
+};
+
 module.exports = {
   miniChefPoolQuery,
   blockQuery,
