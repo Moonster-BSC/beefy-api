@@ -17,22 +17,27 @@ const BLOCKS_PER_DAY = 28800;
 const getComethLpApys = async () => {
   let apys = {};
 
+  const pairAddresses = pools.map(pool => pool.address);
+  const tradingAprs = await getTradingFeeApr(pairAddresses);
+
   for (const pool of pools) {
-    const apy = await getPoolApy(pool.rewardPool, pool, 137);
+    const tradingApr = BigNumber(tradingAprs[pool.address]);
+    const apy = await getPoolApy(pool.rewardPool, pool, 137, tradingApr);
     apys = { ...apys, ...apy };
   }
 
   return apys;
 };
 
-const getPoolApy = async (rewardPool, pool, chainId) => {
+const getPoolApy = async (rewardPool, pool, chainId, tradingApr) => {
   const [yearlyRewardsInUsd, totalStakedInUsd] = await Promise.all([
     getYearlyRewardsInUsd(rewardPool),
     getTotalLpStakedInUsd(rewardPool, pool, chainId),
   ]);
 
   const simpleApy = yearlyRewardsInUsd.dividedBy(totalStakedInUsd);
-  const apy = compound(simpleApy, BASE_HPY, 1, 0.955);
+  const aprWithFees = simpleApy.plus(tradingApr);
+  const apy = compound(aprWithFees, BASE_HPY, 1, 0.955);
   // console.log(pool.name, simpleApy.valueOf(), apy);
   return { [pool.name]: apy };
 };
