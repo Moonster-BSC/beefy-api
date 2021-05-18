@@ -7,6 +7,8 @@ const pools = require('../../../data/matic/comethLpPools.json');
 const { compound } = require('../../../utils/compound');
 const { getTotalLpStakedInUsd } = require('../../../utils/getTotalStakedInUsd');
 const { BASE_HPY } = require('../../../constants');
+const { getTradingFeeApr } = require('../../../utils/getTradingFeeApr');
+const { comethClient } = require('../../../apollo/client');
 
 const oracle = 'tokens';
 const oracleId = 'MUST';
@@ -14,11 +16,13 @@ const oracleId = 'MUST';
 const DECIMALS = '1e18';
 const BLOCKS_PER_DAY = 28800;
 
+const liquidityProviderFee = 0.005;
+
 const getComethLpApys = async () => {
   let apys = {};
 
   const pairAddresses = pools.map(pool => pool.address);
-  const tradingAprs = await getTradingFeeApr(pairAddresses);
+  const tradingAprs = await getTradingFeeApr(comethClient, pairAddresses, liquidityProviderFee);
 
   for (const pool of pools) {
     const tradingApr = BigNumber(tradingAprs[pool.address]);

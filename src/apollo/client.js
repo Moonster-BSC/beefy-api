@@ -29,8 +29,17 @@ const blockClient_matic = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
+const comethClient = new ApolloClient({
+  link: createHttpLink({
+    uri: 'https://api.thegraph.com/subgraphs/name/cometh-game/comethswap',
+    fetch,
+  }),
+  cache: new InMemoryCache(),
+});
+
 module.exports = {
   exchange_matic,
   minichefv2_matic,
   blockClient_matic,
+  comethClient,
 };
