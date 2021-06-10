@@ -1,5 +1,46 @@
 [
   {
+    "name": "quick-",
+    "address": "",
+    "rewardPool": "",
+    "decimals": "1e18",
+    "poolId": 0,
+    "chainId": 137,
+    "lp0": {
+      "address": "",
+      "oracle": "tokens",
+      "oracleId": "",
+      "decimals": ""
+    },
+    "lp1": {
+      "address": "",
+      "oracle": "tokens",
+      "oracleId": "",
+      "decimals": ""
+    }
+  },
+  {
+    "name": "quick-pauto-quick",
+    "address": "0x3bb367f673d52d1a5f0812c4d8c9030e5876ad44",
+    "rewardPool": "0x6b9C78e419C3038dAC2DAb9dB2bfd5D9F1E05904",
+    "decimals": "1e18",
+    "poolId": 0,
+    "chainId": 137,
+    "lp0": {
+      "address": "0x7f426F6Dc648e50464a0392E60E1BB465a67E9cf",
+      "oracle": "tokens",
+      "oracleId": "PAUTO",
+      "decimals": "1e18"
+    },
+    "lp1": {
+      "address": "0x831753DD7087CaC61aB5644b308642cc1c33Dc13",
+      "oracle": "tokens",
+      "oracleId": "QUICK",
+      "decimals": "1e18"
+    }
+  },
+  // done
+  {
     "name": "quick-titan-eth",
     "address": "0xA28Ade2f27b9554b01964FDCe97eD643301411d9",
     "rewardPool": "0x2dF6A6b1B7aA23a842948a81714a2279e603e32f",
