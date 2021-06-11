@@ -61,7 +61,7 @@
   },
   {
     "name": "quick-quick-game",
-    "address": "0x6276969983510b3dfae28fe6b7b8e2a858f0c2bd",
+    "address": "0x6276969983510b3DfAE28fE6b7b8e2A858F0c2bd",
     "rewardPool": "0x8FC0a8dE57d15dF22238FCd165Cd5d6658ac4788",
     "decimals": "1e18",
     "poolId": 0,
@@ -81,7 +81,7 @@
   },
   {
     "name": "quick-$dg-eth",
-    "address": "0xb1ff609d3341fe5a822faae973b8c5a227d8889e",
+    "address": "0xB1ff609d3341Fe5a822FaaE973B8C5a227d8889e",
     "rewardPool": "0x0C7395bc2b25603941a67e4DaF327362dB8f7D54",
     "decimals": "1e18",
     "poolId": 0,
@@ -101,7 +101,7 @@
   },
   {
     "name": "quick-$dg-quick",
-    "address": "0x96fdd975c4ba24c49e21140284ee09d6537e8ef7",
+    "address": "0x96FdD975C4ba24c49e21140284ee09d6537e8eF7",
     "rewardPool": "0x4aC2D949D9E7e2c47e0FB6c7e2316BAE58d27599",
     "decimals": "1e18",
     "poolId": 0,
@@ -121,7 +121,7 @@
   },
   {
     "name": "quick-matic-emon",
-    "address": "0xa408a751b6d05d1649c5bbd7c38842fb17ea1846",
+    "address": "0xa408a751B6D05d1649c5bbD7C38842fb17ea1846",
     "rewardPool": "0xC9212Ee9bb5A5Cc4fe4D827c65e6De7324297F77",
     "decimals": "1e18",
     "poolId": 0,
@@ -141,7 +141,7 @@
   },
   {
     "name": "quick-quick-emon",
-    "address": "0x9b6550471fbf39d4708c407eee3fe3d82c6ac6c3",
+    "address": "0x9B6550471fBF39d4708c407eee3FE3d82c6Ac6c3",
     "rewardPool": "0x6BcCF1f0825826964c2eCC2408B00659eb357b6D",
     "decimals": "1e18",
     "poolId": 0,
@@ -161,7 +161,7 @@
   },
   {
     "name": "quick-uft-eth",
-    "address": "0xaef2b47b5e30661c3cc03b3e17fd8dcddc1f27b6",
+    "address": "0xAeF2B47b5e30661C3cC03b3E17fD8DCdDC1f27B6",
     "rewardPool": "0xd898A0223a1d3aBD18428065A45bE318784D8A91",
     "decimals": "1e18",
     "poolId": 0,
