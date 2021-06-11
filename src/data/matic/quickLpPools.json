@@ -1,7 +1,7 @@
 [
   {
     "name": "quick-chum-quick",
-    "address": "0x0a126ad4e9c446c6219519062932f624d82e075e",
+    "address": "0x0A126ad4e9c446c6219519062932f624D82E075e",
     "rewardPool": "0x51fE4871BD8BFb0d88243194761C361dA4803a2f",
     "decimals": "1e18",
     "poolId": 0,
@@ -21,7 +21,7 @@
   },
   {
     "name": "quick-matic-ele",
-    "address": "0xadcb09fd3346c72c98753e518397b336333cf227",
+    "address": "0xADcb09FD3346c72C98753e518397b336333Cf227",
     "rewardPool": "0x9318F6f64e61AfB7B51D51E61B5dD6C4E39E7dd9",
     "decimals": "1e18",
     "poolId": 0,
