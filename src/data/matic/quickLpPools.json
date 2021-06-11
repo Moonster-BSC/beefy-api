@@ -181,7 +181,7 @@
   },
   {
     "name": "quick-uft-quick",
-    "address": "0x6928f1577b3507de99490ca8c5acea6fc1d24a84",
+    "address": "0x6928F1577b3507De99490CA8C5aCEa6FC1d24a84",
     "rewardPool": "0x63F423B8fbCc810Ed8A0C2f4921E3946a83eBe9C",
     "decimals": "1e18",
     "poolId": 0,
@@ -201,7 +201,7 @@
   },
   {
     "name": "quick-matic-wolf",
-    "address": "0x652a7b75c229850714d4a11e856052aac3e9b065",
+    "address": "0x652a7b75c229850714D4a11E856052AAC3e9b065",
     "rewardPool": "0x3139523e1507cF6B0700Be2EABea6D5e919C6369",
     "decimals": "1e18",
     "poolId": 0,
@@ -221,7 +221,7 @@
   },
   {
     "name": "quick-qi-quick",
-    "address": "0x25d56e2416f20de1efb1f18fd06dd12efec3d3d0",
+    "address": "0x25d56E2416f20De1Efb1F18fd06dD12eFeC3D3D0",
     "rewardPool": "0xad9E0d2FC293fD9a0f6c3C16c16A69d36B6D3b06",
     "decimals": "1e18",
     "poolId": 0,
@@ -481,7 +481,7 @@
   },
   {
     "name": "quick-dai-usdt",
-    "address": "0x59153f27eefe07e5ece4f9304ebba1da6f53ca88",
+    "address": "0x59153f27eeFE07E5eCE4f9304EBBa1DA6F53CA88",
     "rewardPool": "0x97Efe8470727FeE250D7158e6f8F63bb4327c8A2",
     "decimals": "1e18",
     "poolId": 0,
@@ -501,7 +501,7 @@
   },
   {
     "name": "quick-usdc-dai",
-    "address": "0xf04adbf75cdfc5ed26eea4bbbb991db002036bdd",
+    "address": "0xf04adBF75cDFc5eD26eeA4bbbb991DB002036Bdd",
     "rewardPool": "0xEd8413eCEC87c3d4664975743c02DB3b574012a7",
     "decimals": "1e18",
     "poolId": 0,
