@@ -41,7 +41,7 @@
   },
   {
     "name": "quick-quick-ele",
-    "address": "0x6696db3a5ef00e24c065edcfbc114b13ea9ee997",
+    "address": "0x6696db3A5eF00e24c065edcFbc114b13Ea9eE997",
     "rewardPool": "0xd00f210E67ef9c3F674e2D6A7A619602E888345d",
     "decimals": "1e18",
     "poolId": 0,
