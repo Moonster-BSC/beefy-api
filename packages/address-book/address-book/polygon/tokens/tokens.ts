@@ -9,6 +9,15 @@ const MATIC = {
 };
 
 export const tokens = {
+  $DG2: {
+    name: 'decentral.games',
+    address: '0x2a93172c8DCCbfBC60a39d56183B7279a2F647b4',
+    symbol: '$DG',
+    decimals: 18,
+    chainId: 137,
+    logoURI:
+      'https://raw.githubusercontent.com/sameepsi/quickswap-default-token-list/master/assets/dg.jpg',
+  },
   $DG: {
     name: 'decentral.games',
     address: '0x2a93172c8DCCbfBC60a39d56183B7279a2F647b4',
