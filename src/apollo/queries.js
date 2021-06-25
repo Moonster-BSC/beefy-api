@@ -3,7 +3,7 @@ const gql = require('graphql-tag');
 const bifiSwapQuery = (maxiAddress, startTimestamp, endTimestamp) => {
   const queryString = `
   query bifiSwaps {
-    swaps(where: {from_in: ["${maxiAddress}"], timestamp_gt: "${startTimestamp}", timestamp_gt: "${endTimestamp}"})
+    swaps(where: {to_in: ["${maxiAddress}"], timestamp_gt: "${startTimestamp}", timestamp_lt: "${endTimestamp}"})
   }
 `;
   return gql(queryString);
