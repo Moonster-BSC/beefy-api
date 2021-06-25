@@ -1,5 +1,14 @@
 const gql = require('graphql-tag');
 
+const bifiSwapQuery = (maxiAddress, startTimestamp, endTimestamp) => {
+  const queryString = `
+  query bifiSwaps {
+    swaps(where: {from_in: ["${maxiAddress}"], timestamp_gt: "${startTimestamp}", timestamp_gt: "${endTimestamp}"})
+  }
+`;
+  return gql(queryString);
+};
+
 const pairDayDataQuery = (pairs, startTimestamp, endTimestamp) => {
   let pairsString = `[`;
   pairs.map(pair => {
