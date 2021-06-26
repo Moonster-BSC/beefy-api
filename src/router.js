@@ -14,6 +14,7 @@ const multichainVaults = require('./api/vaults');
 
 router.get('/apy', stats.apy);
 router.get('/apy/breakdown', stats.apyBreakdowns);
+router.get('/bifibuyback');
 
 router.get('/tvl', tvl.vaultTvl);
 router.get('/cmc', cmc.vaults);
