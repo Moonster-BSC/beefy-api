@@ -60,4 +60,5 @@ const pairDayDataSushiQuery = (pairs, startTimestamp, endTimestamp) => {
 module.exports = {
   pairDayDataQuery,
   pairDayDataSushiQuery,
+  bifiSwapQuery,
 };
