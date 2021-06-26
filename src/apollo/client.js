@@ -36,6 +36,14 @@ const quickClient = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
+const quickClientSwaps = new ApolloClient({
+  link: createHttpLink({
+    uri: 'https://thegraph.com/explorer/subgraph/sameepsi/quickswap03',
+    fetch,
+  }),
+  cache: new InMemoryCache(),
+});
+
 const polyzapClient = new ApolloClient({
   link: createHttpLink({
     uri: 'https://api.thegraph.com/subgraphs/name/polyzap/exchange',
@@ -167,4 +175,5 @@ module.exports = {
   lydiaClient,
   pantherClient,
   jetswapClient,
+  quickClientSwaps,
 };
