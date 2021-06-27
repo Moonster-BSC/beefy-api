@@ -94,13 +94,33 @@ const getOneDayBlocks = async () => {
   return [startBlock, endBlock];
 };
 
+const getOneDayBlocksFromPolygonscan = async () => {
+  const [start, end] = getStartAndEndDate(0, 1);
+  const startBlock = await getBlockFromPolyscan(start);
+  const endBlock = await getBlockFromPolyscan(start);
+  return [startBlock, endBlock];
+};
+
+interface BlockResponse {
+  status: string;
+  message: string;
+  result: string;
+}
+
+const getBlockFromPolyscan = async timestamp => {
+  const url = `https://api.polygonscan.com/api?module=block&action=getblocknobytime&timestamp=${timestamp}&closest=after&apikey=YourApiKeyToken`;
+  const resp = await fetch(url);
+  const json: BlockResponse = await resp.json();
+  return json.result;
+};
+
 const getBuyback = async client => {
   const first = offsetInterval;
   let offset = 0;
   let bifiBuybackTokenAmount = new BigNumber(0);
   // const [start, end] = getStartAndEndDate(7, 8);
   // const [start, end] = [1624196707, 1624319569];
-  const [startBlock, endBlock] = await getOneDayBlocks();
+  const [startBlock, endBlock] = await getOneDayBlocksFromPolygonscan();
   // rough estimate, could set to true, but don't want potential infinite loop
   const url = `https://api.polygonscan.com/api?module=account&action=tokentx&address=${bifiMaxiAddress}&startblock=${startBlock}&endblock=${endBlock}&sort=asc&apikey=YourApiKeyToken`;
   const resp = await fetch(url);
