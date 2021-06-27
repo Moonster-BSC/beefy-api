@@ -103,8 +103,9 @@ const getBuyback = async client => {
   const [startBlock, endBlock] = await getOneDayBlocks();
   // rough estimate, could set to true, but don't want potential infinite loop
   const url = `https://api.polygonscan.com/api?module=account&action=tokentx&address=${bifiMaxiAddress}&startblock=${startBlock}&endblock=${endBlock}&sort=asc&apikey=YourApiKeyToken`;
-  const resp: RootObject = fetch(url);
-  for (const entry of resp.result) {
+  const resp = await fetch(url);
+  const json: RootObject = await resp.json();
+  for (const entry of json.result) {
     if (entry.from === uniPairAddress) {
       // replace with token decimals
       bifiBuybackTokenAmount = bifiBuybackTokenAmount.plus(
