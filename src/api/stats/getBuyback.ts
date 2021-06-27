@@ -6,7 +6,6 @@ async function getBuyback(ctx) {
   try {
     ctx.request.socket.setTimeout(TIMEOUT);
     let bifibuyback = await getBifi();
-
     if (!bifibuyback) {
       throw 'There is no bifibuyback data yet';
     }
