@@ -156,6 +156,20 @@ const jetswapClient = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
+export const polygonBlockClient = new ApolloClient({
+  link: createHttpLink({
+    uri: 'https://api.thegraph.com/subgraphs/name/matthewlilley/polygon-blocks',
+    fetch,
+  }),
+  cache: new InMemoryCache(),
+  defaultOptions: {
+    query: {
+      fetchPolicy: 'no-cache',
+      errorPolicy: 'all',
+    },
+  },
+});
+
 module.exports = {
   apePolyClient,
   sushiClient,
@@ -176,4 +190,5 @@ module.exports = {
   pantherClient,
   jetswapClient,
   quickClientSwaps,
+  polygonBlockClient,
 };

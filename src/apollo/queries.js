@@ -1,6 +1,6 @@
 const gql = require('graphql-tag');
 
-const bifiSwapQuery = (offset, maxiAddress, startTimestamp, endTimestamp) => {
+const bifiSwapQuery = (first, offset, maxiAddress, startTimestamp, endTimestamp) => {
   // TODO: need to specify bifi-eth pair
   const queryString = `
   {
@@ -28,6 +28,28 @@ const bifiSwapQuery = (offset, maxiAddress, startTimestamp, endTimestamp) => {
 `;
   return gql(queryString);
 };
+
+const blockFieldsQuery = gql`
+  fragment blockFields on Block {
+    id
+    number
+    timestamp
+  }
+`;
+
+const blockQuery = gql`
+  query blockQuery($start: Int!, $end: Int!) {
+    blocks(
+      first: 1
+      orderBy: timestamp
+      orderDirection: asc
+      where: { timestamp_gt: $start, timestamp_lt: $end }
+    ) {
+      ...blockFields
+    }
+  }
+  ${blockFieldsQuery}
+`;
 
 const pairDayDataQuery = (pairs, startTimestamp, endTimestamp) => {
   let pairsString = `[`;
@@ -81,4 +103,5 @@ module.exports = {
   pairDayDataQuery,
   pairDayDataSushiQuery,
   bifiSwapQuery,
+  blockQuery,
 };
