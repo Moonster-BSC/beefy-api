@@ -108,9 +108,8 @@ const getBuyback = async client => {
   for (const entry of json.result) {
     if (entry.from === uniPairAddress) {
       // replace with token decimals
-      bifiBuybackTokenAmount = bifiBuybackTokenAmount.plus(
-        new BigNumber(entry.value).dividedBy('1e18')
-      );
+      const tokenAmount = new BigNumber(entry.value).dividedBy('1e18');
+      bifiBuybackTokenAmount = bifiBuybackTokenAmount.plus(tokenAmount);
     }
   }
 
