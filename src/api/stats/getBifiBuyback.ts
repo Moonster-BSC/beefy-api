@@ -97,7 +97,7 @@ const getOneDayBlocks = async () => {
 const getOneDayBlocksFromPolygonscan = async () => {
   const [start, end] = getStartAndEndDate(0, 1);
   const startBlock = await getBlockFromPolyscan(start);
-  const endBlock = await getBlockFromPolyscan(start);
+  const endBlock = await getBlockFromPolyscan(end);
   return [startBlock, endBlock];
 };
 
