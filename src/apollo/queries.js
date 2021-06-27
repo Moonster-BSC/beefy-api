@@ -5,6 +5,25 @@ const bifiSwapQuery = (maxiAddress, startTimestamp, endTimestamp) => {
   const queryString = `
   query bifiSwaps {
     swaps(where: {to_in: ["${maxiAddress}"], timestamp_gt: "${startTimestamp}", timestamp_lt: "${endTimestamp}"})
+      id
+    pair{
+      id
+      token0 {
+        id
+      }
+      token1 {
+        id
+      }
+    }
+    transaction {
+      id
+    }
+    from
+    amount0In
+    amount1In
+    amount0Out
+    amount1Out
+    }
   }
 `;
   return gql(queryString);
