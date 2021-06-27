@@ -27,13 +27,11 @@ const getStartAndEndDate = (daysAgo0, daysAgo1) => {
 };
 
 const getBuyback = async client => {
-  let end = false;
   let offset = 0;
   let bifiBuybackTokenAmount = new BigNumber(0);
+  const [start, end] = getStartAndEndDate(1, 2);
   // rough estimate, could set to true, but don't want potential infinite loop
   while (offset < 20000) {
-    const [start, end] = getStartAndEndDate(1, 2);
-
     const resp = await client.query({
       query: bifiSwapQuery(offset, bifiMaxiAddress, start, end),
     });
