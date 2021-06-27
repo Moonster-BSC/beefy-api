@@ -5,7 +5,6 @@ const TIMEOUT = 5 * 60 * 1000;
 async function getBuyback(ctx) {
   try {
     ctx.request.socket.setTimeout(TIMEOUT);
-    await updateBifiBuyback();
     let bifibuyback = await getBifi();
 
     if (!bifibuyback) {
