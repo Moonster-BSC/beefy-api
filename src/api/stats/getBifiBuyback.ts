@@ -11,6 +11,7 @@ const {
 } = require('blockchain-addressbook');
 
 const bifiMaxiAddress = '0xd126ba764d2fa052fc14ae012aef590bc6ae0c4f';
+const wethBifiLpAddress = '0x8b80417d92571720949fc22404200ab8faf7775f';
 
 const INIT_DELAY = 40 * 1000;
 const REFRESH_INTERVAL = 15 * 60 * 1000;
@@ -18,7 +19,6 @@ const REFRESH_INTERVAL = 15 * 60 * 1000;
 const getUTCSeconds = (date /*: Date*/) => Math.floor(Number(date) / 1000);
 
 const getStartAndEndDate = (daysAgo0, daysAgo1) => {
-  // Use data between (now - 2) days and (now - 1) day, since current day data is still being produced
   const endDate = startOfMinute(subDays(Date.now(), daysAgo0));
   const startDate = startOfMinute(subDays(Date.now(), daysAgo1));
   const [start, end] = [startDate, endDate].map(getUTCSeconds);
@@ -29,50 +29,37 @@ const getBuyback = async client => {
   const [start, end] = getStartAndEndDate(1, 2);
 
   let {
-    data: { pairDayDatas },
+    data: { swaps },
   } = await client.query({
     query: bifiSwapQuery(bifiMaxiAddress, start, end),
   });
 
-  const pairAddressToAprMap = {};
-  for (const pairDayData of pairDayDatas) {
-    const pairAddress = pairDayData.id.split('-')[0].toLowerCase();
-    pairAddressToAprMap[pairAddress] = new BigNumber(pairDayData.dailyVolumeUSD)
-      .times(liquidityProviderFee)
-      .times(365)
-      .dividedBy(pairDayData.reserveUSD);
+  let bifiBuybackTokenAmount = 0;
+  for (const swap of swaps) {
+    const { pair } = swap;
+    if (pair.id === wethBifiLpAddress) {
+      bifiBuybackTokenAmount += swap.amount1Out;
+    }
   }
 
-  return pairAddressToAprMap;
+  return bifiBuybackTokenAmount;
 };
 
-let tvl = {};
+let dailyBifiBuyback;
 
 const getBifiBuyback = () => {
-  return tvl;
+  return dailyBifiBuyback;
 };
 
 const updateBifiBuyback = async () => {
-  console.log('> updating tvl');
+  console.log('> updating bifi buyback');
 
   try {
-    let promises = [];
+    dailyBifiBuyback = await getBuyback(quickClientSwaps);
 
-    chains.forEach(chain => promises.push(getChainTvl(chain)));
-
-    const results = await Promise.allSettled(promises);
-
-    for (const result of results) {
-      if (result.status !== 'fulfilled') {
-        console.warn('getChainTvl error', result.reason);
-        continue;
-      }
-      tvl = { ...tvl, ...result.value };
-    }
-
-    console.log('> updated tvl');
+    console.log('> updated bifi buyback');
   } catch (err) {
-    console.error('> tvl initialization failed', err);
+    console.error('> bifi buyback initialization failed', err);
   }
 
   setTimeout(updateBifiBuyback, REFRESH_INTERVAL);
