@@ -4,7 +4,7 @@ const bifiSwapQuery = (offset, maxiAddress, startTimestamp, endTimestamp) => {
   // TODO: need to specify bifi-eth pair
   const queryString = `
   {
-    swaps(offset: ${offset}, orderBy: timestamp, orderDirection: desc, where: {to_in: ["${maxiAddress}"], timestamp_gt: "${startTimestamp}", timestamp_lt: "${endTimestamp}"}) {
+    swaps(skip: ${offset}, orderBy: timestamp, orderDirection: desc, where: {to_in: ["${maxiAddress}"], timestamp_gt: "${startTimestamp}", timestamp_lt: "${endTimestamp}"}) {
       id
     pair{
       id

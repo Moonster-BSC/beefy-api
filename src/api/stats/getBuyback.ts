@@ -9,7 +9,7 @@ async function getBuyback(ctx) {
     let bifibuyback = await getBifi();
 
     if (!bifibuyback) {
-      throw 'There is no APY Breakdowns data yet';
+      throw 'There is no bifibuyback data yet';
     }
 
     ctx.status = 200;
