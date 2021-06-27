@@ -105,14 +105,16 @@ const getBuyback = async client => {
   const url = `https://api.polygonscan.com/api?module=account&action=tokentx&address=${bifiMaxiAddress}&startblock=${startBlock}&endblock=${endBlock}&sort=asc&apikey=YourApiKeyToken`;
   const resp = await fetch(url);
   const json: RootObject = await resp.json();
+  let txCount = 0;
   for (const entry of json.result) {
     if (entry.from === uniPairAddress) {
       // replace with token decimals
       const tokenAmount = new BigNumber(entry.value).dividedBy('1e18');
       bifiBuybackTokenAmount = bifiBuybackTokenAmount.plus(tokenAmount);
+      txCount += 1;
     }
   }
-
+  console.log(`Harvest count: ${txCount}`);
   return bifiBuybackTokenAmount;
 };
 
