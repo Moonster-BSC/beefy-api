@@ -1,6 +1,7 @@
 const gql = require('graphql-tag');
 
 const bifiSwapQuery = (maxiAddress, startTimestamp, endTimestamp) => {
+  // TODO: need to specify bifi-eth pair
   const queryString = `
   query bifiSwaps {
     swaps(where: {to_in: ["${maxiAddress}"], timestamp_gt: "${startTimestamp}", timestamp_lt: "${endTimestamp}"})
