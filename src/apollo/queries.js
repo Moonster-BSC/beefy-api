@@ -1,10 +1,10 @@
 const gql = require('graphql-tag');
 
-const bifiSwapQuery = (maxiAddress, startTimestamp, endTimestamp) => {
+const bifiSwapQuery = (offset, maxiAddress, startTimestamp, endTimestamp) => {
   // TODO: need to specify bifi-eth pair
   const queryString = `
-  query bifiSwaps {
-    swaps(where: {to_in: ["${maxiAddress}"], timestamp_gt: "${startTimestamp}", timestamp_lt: "${endTimestamp}"})
+  {
+    swaps(offset: ${offset}, orderBy: timestamp, orderDirection: desc, where: {to_in: ["${maxiAddress}"], timestamp_gt: "${startTimestamp}", timestamp_lt: "${endTimestamp}"}) {
       id
     pair{
       id
@@ -23,7 +23,8 @@ const bifiSwapQuery = (maxiAddress, startTimestamp, endTimestamp) => {
     amount1In
     amount0Out
     amount1Out
-  }
+    }
+}
 `;
   return gql(queryString);
 };
