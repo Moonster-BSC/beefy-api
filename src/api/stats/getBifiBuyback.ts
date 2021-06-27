@@ -29,15 +29,21 @@ const getStartAndEndDate = (daysAgo0, daysAgo1) => {
 const getBuyback = async client => {
   const [start, end] = getStartAndEndDate(1, 2);
 
-  let {
-    data: { swaps },
-  } = await client.query({
+  //   let {
+  //     data: { swaps },
+  //   }
+  const resp = await client.query({
     query: bifiSwapQuery(bifiMaxiAddress, start, end),
   });
+
+  const {
+    data: { swaps },
+  } = resp;
 
   let bifiBuybackTokenAmount = new BigNumber(0);
   for (const swap of swaps) {
     const { pair } = swap;
+    // just a double check
     if (pair.id === wethBifiLpAddress) {
       bifiBuybackTokenAmount = bifiBuybackTokenAmount.plus(new BigNumber(swap.amount1Out));
     }

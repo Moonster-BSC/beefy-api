@@ -38,7 +38,7 @@ const quickClient = new ApolloClient({
 
 const quickClientSwaps = new ApolloClient({
   link: createHttpLink({
-    uri: 'https://thegraph.com/explorer/subgraph/sameepsi/quickswap03',
+    uri: 'https://api.thegraph.com/subgraphs/name/sameepsi/quickswap03',
     fetch,
   }),
   cache: new InMemoryCache(),
