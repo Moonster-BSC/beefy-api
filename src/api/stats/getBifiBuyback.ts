@@ -30,7 +30,8 @@ const getBuyback = async client => {
   let end = false;
   let offset = 0;
   let bifiBuybackTokenAmount = new BigNumber(0);
-  while (!end) {
+  // rough estimate, could set to true, but don't want potential infinite loop
+  while (offset < 20000) {
     const [start, end] = getStartAndEndDate(1, 2);
 
     const resp = await client.query({
@@ -40,6 +41,10 @@ const getBuyback = async client => {
     const {
       data: { swaps },
     } = resp;
+
+    if (!swaps || !(swaps.length > 0)) {
+      break;
+    }
 
     for (const swap of swaps) {
       const { pair } = swap;
