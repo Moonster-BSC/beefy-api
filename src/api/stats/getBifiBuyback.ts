@@ -9,6 +9,7 @@ const {
     },
   },
 } = require('blockchain-addressbook');
+const fetchPrice = require('../../utils/fetchPrice');
 
 const bifiMaxiAddress = '0xd126ba764d2fa052fc14ae012aef590bc6ae0c4f';
 const wethBifiLpAddress = '0x8b80417d92571720949fc22404200ab8faf7775f';
@@ -34,28 +35,30 @@ const getBuyback = async client => {
     query: bifiSwapQuery(bifiMaxiAddress, start, end),
   });
 
-  let bifiBuybackTokenAmount = 0;
+  let bifiBuybackTokenAmount = new BigNumber(0);
   for (const swap of swaps) {
     const { pair } = swap;
     if (pair.id === wethBifiLpAddress) {
-      bifiBuybackTokenAmount += swap.amount1Out;
+      bifiBuybackTokenAmount = bifiBuybackTokenAmount.plus(new BigNumber(swap.amount1Out));
     }
   }
 
   return bifiBuybackTokenAmount;
 };
 
-let dailyBifiBuyback;
+let dailyBifiBuybackInUsd;
 
 const getBifiBuyback = () => {
-  return dailyBifiBuyback;
+  return dailyBifiBuybackInUsd;
 };
 
 const updateBifiBuyback = async () => {
   console.log('> updating bifi buyback');
 
   try {
-    dailyBifiBuyback = await getBuyback(quickClientSwaps);
+    const dailyBifiBuyback = await getBuyback(quickClientSwaps);
+    const bifiPrice = await fetchPrice({ oracle: 'tokens', id: 'BIFI' });
+    dailyBifiBuybackInUsd = dailyBifiBuyback.times(new BigNumber(bifiPrice));
 
     console.log('> updated bifi buyback');
   } catch (err) {
