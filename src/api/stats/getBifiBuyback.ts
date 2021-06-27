@@ -59,7 +59,7 @@ const getStartAndEndDate = (daysAgo0, daysAgo1) => {
 };
 
 const getOneDayBlocks = async () => {
-  const [start, end] = getStartAndEndDate(7, 8);
+  const [start, end] = getStartAndEndDate(0, 1);
 
   const blocksDataStart = await polygonBlockClient.query({
     query: blockQuery,
