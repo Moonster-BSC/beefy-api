@@ -23,7 +23,6 @@ const bifiSwapQuery = (maxiAddress, startTimestamp, endTimestamp) => {
     amount1In
     amount0Out
     amount1Out
-    }
   }
 `;
   return gql(queryString);
