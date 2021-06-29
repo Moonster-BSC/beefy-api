@@ -2,7 +2,7 @@
   {
     "name": "dfyn-ust-usdt",
     "address": "0x39BEd7f1C412ab64443196A6fEcb2ac20C707224",
-    "rewardPool": "",
+    "rewardPool": "0x4B47d7299Ac443827d4468265A725750475dE9E6",
     "decimals": "1e18",
     "poolId": 0,
     "chainId": 137,
