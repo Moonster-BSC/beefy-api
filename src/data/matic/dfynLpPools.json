@@ -1,0 +1,32 @@
+[
+  {
+    "name": "dfyn-ust-usdt",
+    "address": "0x39BEd7f1C412ab64443196A6fEcb2ac20C707224",
+    "rewardPool": "",
+    "decimals": "1e18",
+    "poolId": 0,
+    "chainId": 137,
+    "lp0": {
+      "address": "0x692597b009d13C4049a947CAB2239b7d6517875F",
+      "oracle": "tokens",
+      "oracleId": "UST",
+      "decimals": "1e18"
+    },
+    "lp1": {
+      "address": "0xc2132D05D31c914a87C6611C10748AEb04B58e8F",
+      "oracle": "tokens",
+      "oracleId": "USDT",
+      "decimals": "1e6"
+    }
+  },
+  {
+    "name": "dfyn-",
+    "address": "",
+    "rewardPool": "",
+    "decimals": "1e18",
+    "poolId": 0,
+    "chainId": 137,
+    "lp0": {},
+    "lp1": {}
+  }
+]
