@@ -1,15 +1,22 @@
-'use strict';
+import 'reflect-metadata';
+import { createKoaServer, getMetadataArgsStorage, useKoaServer } from 'routing-controllers';
+import { routingControllersToSpec } from 'routing-controllers-openapi';
+import { BeefyController } from './beefyController';
 
-const Koa = require('koa');
-const helmet = require('koa-helmet');
-const body = require('koa-bodyparser');
-const cors = require('@koa/cors');
-const conditional = require('koa-conditional-get');
-const etag = require('koa-etag');
+const routingControllersOptions = {
+  controllers: [BeefyController],
+};
 
-const rt = require('./middleware/rt');
-const powered = require('./middleware/powered');
-const router = require('./router');
+import Koa from 'koa';
+import helmet from 'koa-helmet';
+import body from 'koa-bodyparser';
+import cors from '@koa/cors';
+import conditional from 'koa-conditional-get';
+import etag from 'koa-etag';
+
+import rt from './middleware/rt';
+import powered from './middleware/powered';
+// import router from './router';
 
 const app = new Koa();
 
@@ -23,8 +30,10 @@ app.use(body());
 
 app.context.cache = {};
 
-app.use(router.routes());
-app.use(router.allowedMethods());
+// app.use(router.routes());
+// app.use(router.allowedMethods());
+
+useKoaServer(app, routingControllersOptions);
 
 const port = process.env.PORT || 3000;
 app.listen(port);
