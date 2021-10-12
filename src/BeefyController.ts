@@ -1,9 +1,30 @@
 import { Controller, Param, Body, Get, Post, Put, Delete } from 'routing-controllers';
+import { OpenAPI, ResponseSchema } from 'routing-controllers-openapi';
 import { getApys } from './api/stats/getApys';
 
+const x: Record<string, number> = {};
+import {
+  IsOptional,
+  IsString,
+  MaxLength,
+  IsNumber,
+  IsPositive,
+  ValidateNested,
+  IsNotEmptyObject,
+} from 'class-validator';
+
+class Child {
+  @IsNotEmptyObject()
+  name: Record<string, number>;
+}
+
+@OpenAPI({
+  security: [{ basicAuth: [] }], // Applied to each method
+})
 @Controller()
 export class BeefyController {
   @Get('/apy')
+  @ResponseSchema(Child)
   async apy() {
     let apyObject = await getApys();
     let apys = apyObject.apys;
