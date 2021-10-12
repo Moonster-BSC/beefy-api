@@ -1,4 +1,4 @@
-import { Controller, Param, Body, Get, Post, Put, Delete } from 'routing-controllers';
+import { JsonController, Param, Body, Get, Post, Put, Delete } from 'routing-controllers';
 import { OpenAPI, ResponseSchema } from 'routing-controllers-openapi';
 import { getApys } from './api/stats/getApys';
 
@@ -18,13 +18,28 @@ class Child {
   name: Record<string, number>;
 }
 
-@OpenAPI({
-  security: [{ basicAuth: [] }], // Applied to each method
-})
-@Controller()
+@JsonController()
 export class BeefyController {
   @Get('/apy')
-  @ResponseSchema(Child)
+  @OpenAPI({
+    summary: 'Return a single user',
+    description: 'usehello',
+    responses: {
+      '200': {
+        content: {
+          'application/json': {
+            schema: {
+              type: 'object',
+              additionalProperties: {
+                type: 'number',
+              },
+            },
+          },
+        },
+      },
+    },
+  })
+  // @ResponseSchema(Child)
   async apy() {
     let apyObject = await getApys();
     let apys = apyObject.apys;
