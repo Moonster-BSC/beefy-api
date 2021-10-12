@@ -26,6 +26,8 @@
     "checkJs": false,
     "resolveJsonModule": true,
 
-    "strict": false
+    "strict": false,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true
   }
 }
