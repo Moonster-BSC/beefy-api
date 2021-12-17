@@ -36,8 +36,7 @@ const _tokens = {
     website: 'https://sifchain.finance/',
     description:
       'Sifchain aims to be the first Omni-Chain DEX, targeting 20–25 blockchains for cross-chain integration.',
-    logoURI:
-      'https://assets.coingecko.com/coins/images/14044/small/EROWAN.png?1614656300',
+    logoURI: 'https://assets.coingecko.com/coins/images/14044/small/EROWAN.png?1614656300',
   },
   DPI: {
     name: 'Defipulse Index',
@@ -1737,6 +1736,30 @@ const _tokens = {
     description:
       'PolySage Finance is a next-generation yield farming protocol on the Polygon network with lots of unique and creative features that enable you to earn a passive income.',
     logoURI: 'https://polysage.finance/images/sage.png',
+  },
+  BCT: {
+    name: 'Toucan Protocol: Base Carbon Tonne',
+    symbol: 'BCT',
+    address: '0x2F800Db0fdb5223b3C3f354886d907A671414A7F',
+    chainId: 137,
+    decimals: 18,
+    logoURI:
+      'https://pancakeswap.finance/images/tokens/0x2F800Db0fdb5223b3C3f354886d907A671414A7F.svg',
+    website: 'https://toucan.earth/',
+    description:
+      'Toucan Protocol brings carbon as a new money-lego to Web3. Kickstarting an open and decentralized climate finance ecosystem.',
+  },
+  KLIMA: {
+    name: 'Klima DAO',
+    symbol: 'KLIMA',
+    address: '0x4e78011Ce80ee02d2c3e649Fb657E45898257815',
+    chainId: 137,
+    decimals: 9,
+    logoURI:
+      'https://pancakeswap.finance/images/tokens/0x4e78011Ce80ee02d2c3e649Fb657E45898257815.svg',
+    website: 'https://www.klimadao.finance/',
+    description:
+      'Klima DAO gives Web3 builders and users the opportunity to participate in the carbon market through the KLIMA token.',
   },
 } as const;
 
